@@ -20,14 +20,15 @@ public class TcpRouter
             try
             {
 
-                Random roundInteger = new Random();
-                dropPacketSize = (int) Integer.valueOf(args[0])*14/100;
-                dropPacketSize += roundInteger.nextInt(2);
+               // Random roundInteger = new Random();
+                //dropPacketSize = (int) Integer.valueOf(args[0])*14/100;
+                //dropPacketSize += roundInteger.nextInt(2);
 
 			/*      Complete here     */
 
 
                 host = InetAddress.getLocalHost();
+                System.out.println("Enter TcpReceiver IP Address");
 
 			/*      Complete here     */
 
@@ -60,10 +61,18 @@ public class TcpRouter
     private static String handleClient()
     {
         Socket link = null;
+        String str2 = null;
 
         try
         {
             link = serverSocket.accept();
+
+            Scanner input = new Scanner(link.getInputStream());
+            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
+
+            String message = input.nextLine();
+            Scanner input = new Scanner(link2.getInputStream());
+            PrintWriter output2 = new PrintWriter(link2.getOutputStream());
 
 			/*      Complete here     */
 

@@ -25,8 +25,36 @@ public class TcpSender {
         try
         {
             link = new Socket(host,PORT);
+            Scanner input = new Scanner(link.getInputStream());
+            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
+            for (int i = 0; i<6; i++){
+                System.out.println("How many packets");
+                Scanner userEntry = new Scanner(System.in);
+                String message,str2, response;
+                int number;
 
-		/*      Complete here     */
+                response = userEntry.nextLine();
+
+                number = Integer.parseInt(response);
+
+                int counter = 0;
+                int attempt = 0;
+                long statTime = System.nanoTime();
+
+                do{
+                   message = "PCk";
+
+                   output.println(message+counter);
+                   attempt++;
+
+                   link.setSoTimeout(4000);
+
+                   String str = input.nextLine();
+                   str2 = str.substring(0,3);
+
+                } while(!str2.equals("ACK")){
+                }
+
 
         }
         catch(IOException ioEx)

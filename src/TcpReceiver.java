@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -14,9 +15,6 @@ public class TcpReceiver {
         try
         {
             serverSocket = new ServerSocket(PORT);
-
-			/*      Complete here     */
-
 
         }
         catch(IOException ioEx)
@@ -36,9 +34,18 @@ public class TcpReceiver {
         try
         {
             link = serverSocket.accept();
-
-
-			/*      Complete here     */
+            Scanner input = new Scanner(link.getInputStream());
+            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
+            int numMessages = 0;
+            String message = input.nextLine();
+            output.println(message);
+            while(!message.equals("***CLOSE***"))
+            {
+                //if(!message != null)
+                numMessages++;
+                System.out.println(numMessages + ":" + message);
+                message = input.nextLine();
+            }
 
         }
 
@@ -52,7 +59,7 @@ public class TcpReceiver {
             {
                 System.out.println(
                         "\n* Closing connectionÖ *");
-                link.close();                     //Step 5.
+                link.close();
             }
             catch(IOException ioEx)
             {
