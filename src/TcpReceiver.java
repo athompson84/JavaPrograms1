@@ -1,21 +1,21 @@
-import java.io.BufferedReader;
+package Socket4;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-
+import java.util.Random;
 
 public class TcpReceiver {
     private static ServerSocket serverSocket;
     private static final int PORT = 1240;
+
     public static void main(String[] args)
     {
-        System.out.println("Opening port\n");
+        System.out.println("Opening port");
         try
         {
-            serverSocket = new ServerSocket(PORT);
-
+            serverSocket = new ServerSocket(PORT);  //Step 1.
         }
         catch(IOException ioEx)
         {
@@ -23,28 +23,34 @@ public class TcpReceiver {
                     "Unable to attach to port for receiver!");
             System.exit(1);
         }
-        do
-        {
-            handleRouter();
-        }while (true);
+
+        handleRouter();
+
     }
     private static void handleRouter()
     {
-        Socket link = null;
+        Socket link = null;                        //Step 2.
         try
         {
-            link = serverSocket.accept();
-            Scanner input = new Scanner(link.getInputStream());
-            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
+            link = serverSocket.accept();           //Step 2.
+            Scanner input =
+                    new Scanner(link.getInputStream());  //Step 3.
+            PrintWriter output =
+                    new PrintWriter(
+                            link.getOutputStream(),true);   //Step 3.
             int numMessages = 0;
-            String message = input.nextLine();
-            output.println(message);
-            while(!message.equals("***CLOSE***"))
+            String message = input.nextLine(); //Step 4.
+
+            while (!message.equals("***CLOSE***"))
+
             {
-                //if(!message != null)
+                output.println("ACK"+numMessages);
                 numMessages++;
                 System.out.println(numMessages + ":" + message);
                 message = input.nextLine();
+
+
+
             }
 
         }
@@ -58,7 +64,7 @@ public class TcpReceiver {
             try
             {
                 System.out.println(
-                        "\n* Closing connectionÖ *");
+                        "\n* Closing connections (Receiver side)*");
                 link.close();
             }
             catch(IOException ioEx)

@@ -1,4 +1,4 @@
-//package org.test;
+package Socket4;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -9,31 +9,20 @@ public class TcpRouter
     private static InetAddress host;
     private static final int PORT = 1241;
     private static final int PORT2 = 1240;
-    private static Socket link2 = null;
-    private static int counter = 0;
-    private static int dropPacketSize = 0;
 
+    private static Socket link2 = null;
     public static void main(String[] args)
     {
         System.out.println("Opening port");
         {
             try
             {
-
-               // Random roundInteger = new Random();
-                //dropPacketSize = (int) Integer.valueOf(args[0])*14/100;
-                //dropPacketSize += roundInteger.nextInt(2);
-
-			/*      Complete here     */
-
-
                 host = InetAddress.getLocalHost();
-                System.out.println("Enter TcpReceiver IP Address");
-
-			/*      Complete here     */
-
+                System.out.println("Enter TcpReceiver IP Address:");
+//        	  Scanner readIP = new Scanner(System.in);
+//        	  host = readIP.nextLine();
             }
-            catch(UnknownHostException uhEx)
+            catch(Exception uhEx)
             {
                 System.out.println("Host ID not found!");
                 System.exit(1);
@@ -46,7 +35,6 @@ public class TcpRouter
             serverSocket = new ServerSocket(PORT);  //Step 1.
             link2 = new Socket(host,PORT2);
 
-			/*      Complete here     */
         }
         catch(IOException ioEx)
         {
@@ -62,19 +50,49 @@ public class TcpRouter
     {
         Socket link = null;
         String str2 = null;
-
         try
         {
             link = serverSocket.accept();
 
-            Scanner input = new Scanner(link.getInputStream());
-            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
+            Scanner input =
+                    new Scanner(link.getInputStream());
+            PrintWriter output =
+                    new PrintWriter(
+                            link.getOutputStream(),true);
 
             String message = input.nextLine();
-            Scanner input = new Scanner(link2.getInputStream());
-            PrintWriter output2 = new PrintWriter(link2.getOutputStream());
 
-			/*      Complete here     */
+
+            Scanner input2 =
+                    new Scanner(link2.getInputStream());
+
+            PrintWriter output2 =
+                    new PrintWriter(
+                            link2.getOutputStream(),true);
+
+            while (!message.equals("***CLOSE***")){
+                System.out.println("message from sender "+message);
+
+
+                Random randomGenerator = new Random();
+                int randomInt = randomGenerator.nextInt(100);
+                System.out.println("Generated random number for the packet is: "+randomInt);
+                if (randomInt>19){ //for random probability 20%,each packet has a random number between 0 to 99
+
+                    output2.println(message);
+
+                    String str=input2.nextLine();
+                    System.out.println("message from receiver: "+str);
+                    output.println(str);
+                }
+                else
+                {
+                    output.println(str2);
+                }
+                message = input.nextLine();
+
+            }
+
 
         }
 
@@ -87,8 +105,9 @@ public class TcpRouter
             try
             {
                 System.out.println(
-                        "\n* Closing connection�*");
-                link.close();                     //Step 5.
+                        "\n* Closing connections (Router side)*");
+                link.close();
+                link2.close();
             }
             catch(IOException ioEx)
             {
@@ -101,3 +120,4 @@ public class TcpRouter
     }
 
 }
+
