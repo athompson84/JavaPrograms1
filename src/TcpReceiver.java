@@ -1,4 +1,4 @@
-package Socket4;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -15,7 +15,7 @@ public class TcpReceiver {
         System.out.println("Opening port");
         try
         {
-            serverSocket = new ServerSocket(PORT);  //Step 1.
+            serverSocket = new ServerSocket(PORT);
         }
         catch(IOException ioEx)
         {
@@ -29,7 +29,7 @@ public class TcpReceiver {
     }
     private static void handleRouter()
     {
-        Socket link = null;                        //Step 2.
+        Socket link = null;
         try
         {
             link = serverSocket.accept();           //Step 2.

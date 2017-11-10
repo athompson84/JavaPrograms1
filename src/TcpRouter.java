@@ -1,4 +1,4 @@
-package Socket4;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -19,8 +19,7 @@ public class TcpRouter
             {
                 host = InetAddress.getLocalHost();
                 System.out.println("Enter TcpReceiver IP Address:");
-//        	  Scanner readIP = new Scanner(System.in);
-//        	  host = readIP.nextLine();
+
             }
             catch(Exception uhEx)
             {
@@ -32,7 +31,7 @@ public class TcpRouter
         try
         {
 
-            serverSocket = new ServerSocket(PORT);  //Step 1.
+            serverSocket = new ServerSocket(PORT);
             link2 = new Socket(host,PORT2);
 
         }

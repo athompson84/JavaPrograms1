@@ -1,7 +1,8 @@
-package Socket4;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
 
 public class TcpSender extends Thread {
     private static InetAddress host;
@@ -11,8 +12,7 @@ public class TcpSender extends Thread {
         try {
             host = InetAddress.getLocalHost();
             System.out.println("Enter TcpRouter IP Address:");
-//			Scanner readIP = new Scanner(System.in);
-//			host = readIP.nextLine();
+
         } catch (Exception uhEx) {
             System.out.println("Host ID not found!");
             System.exit(1);
@@ -47,7 +47,7 @@ public class TcpSender extends Thread {
                     output.println(message + counter);
                     attempt++;
 
-                    link.setSoTimeout(4000); // Setting timer for sender
+                    link.setSoTimeout(4000);
 
                     String str = input.nextLine();
 
