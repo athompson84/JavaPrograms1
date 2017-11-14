@@ -1,27 +1,25 @@
 /*
 * Anthony Thompson
 * Programming assignment
-*
+* 11/3/17
 *
 *
 *
 */
-
-
 import java.io.*;
 import java.util.*;
 
 
-public class SingleSourceGraph {
+public class SingleSource {
 
-    //Global Attribute
+
     private GraphNode[] vertex;
     private int graphSize;
     private MPriorityQueue q;
     private static int totalCost;
 
-    //contructor of Single Source Graph
-    public SingleSourceGraph(int size) {
+    //constructor of Single Source Graph
+    public SingleSource(int size) {
         this.graphSize = size;
         vertex = new GraphNode[size];
         addGraphNode();
@@ -43,7 +41,7 @@ public class SingleSourceGraph {
         }
     }
 
-    // class for neighboring vertex
+    // class for neighbor vertex
     public class Neighbor {
 
         int nodeIndex;
@@ -98,21 +96,30 @@ public class SingleSourceGraph {
         }
     }
 
+    // citation for algorithm http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
     // dijkstra algorithm/BFS
     private void Dijkstra(GraphNode sourceNode) {
+
         q.add(sourceNode);
+
         sourceNode.nodeState = State.IN_QUEUE;
         sourceNode.Path_Cost = 0;
+
         while (!q.isEmpty()) {
+
             GraphNode vNode = q.remove();
             vNode.nodeState = State.SEEN;
             Neighbor c_Edge = vNode.neborList;
+
             while (c_Edge != null) {
+
                 GraphNode neighborObj = vertex[c_Edge.nodeIndex];
+
                 if (neighborObj.nodeState == State.NEW) {
                     q.add(neighborObj);
                     neighborObj.nodeState = State.IN_QUEUE;
                 }
+
                 //update the cost of each node we did not see
                 if (neighborObj.nodeState != State.SEEN && ((c_Edge.edgeWeight + vNode.Path_Cost)
                         < neighborObj.Path_Cost)) {
@@ -124,6 +131,7 @@ public class SingleSourceGraph {
 
         //prints out the shortest distance
         for (int i = 0; i < graphSize; i++) {
+
             if (vertex[i].Path_Cost != Integer.MAX_VALUE) {
                 System.out.println("distance from " + sourceNode.name + " to " + vertex[i].name + " is " + vertex[i].Path_Cost);
                 totalCost += vertex[i].Path_Cost;
@@ -136,6 +144,12 @@ public class SingleSourceGraph {
     public enum State {
         NEW, IN_QUEUE, SEEN
     };
+
+    /*
+    *citation for binary heap
+    *https://www.java-tips.org/java-se-tips-100019/24-java-lang/1906-priority-queue-binary-heap
+    * -implementation-in-java.html
+    */
 
     //binary heap using queue
     public class MPriorityQueue {
@@ -159,6 +173,7 @@ public class SingleSourceGraph {
             int minValue = Integer.MAX_VALUE;
             int minIndex = -1;
             start++;
+
             for (int i = start; i <= end; i++) {
                 if (queue[i].nodeState == State.IN_QUEUE
                         && queue[i].Path_Cost < minValue) {
@@ -174,9 +189,9 @@ public class SingleSourceGraph {
         //function to swap
 
         public void Swap(int i, int j) {
-            GraphNode temp = queue[i];
+            GraphNode tmp = queue[i];
             queue[i] = queue[j];
-            queue[j] = temp;
+            queue[j] = tmp;
         }
 
         public boolean isEmpty() {
@@ -190,7 +205,7 @@ public class SingleSourceGraph {
         //Read input of the firstInput
         File firstInput = new File("firstInput.txt");
 
-        // File secondInput = new File("secondInput.txt");
+        //File secondInput = new File("secondInput.txt");
 
         //n = vertices and m = edges
         int n, m;
@@ -202,24 +217,24 @@ public class SingleSourceGraph {
         Scanner input = new Scanner(firstInput);
 
         //grab the first line of the file
-        String num = input.nextLine();
+        String scan = input.nextLine();
 
         /*split notation https://stackoverflow.com/questions/3481828/how-to-split-a-string-in-java*/
 
         //Split the first line n= and m= by the space and save to array
-        parts = num.split(" ");
+        parts = scan.split(" ");
 
         //now we can save the split string into 2 different parts to get our n and m
-        String part1 = parts[0];
+        String set1 = parts[0];
 
         //1 holds m
-        String part2 = parts[1];
+        String set2 = parts[1];
 
         // split string from "=" from here we should get n and 25000
-        String[] newParts1 = part1.split("=");
+        String[] newParts1 = set1.split("=");
 
         // split string from "=" from here we should get m and 576014
-        String[] newParts2 = part2.split("=");
+        String[] newParts2 = set2.split("=");
 
 
         //http://javatutorialhq.com/java/lang/integer-class-tutorial/parseint-method-example/
@@ -230,27 +245,30 @@ public class SingleSourceGraph {
         System.out.println("m = " + m);
 
         //create a graph with the number of vertices
-        SingleSourceGraph g = new SingleSourceGraph(n);
+        SingleSource g = new SingleSource(n);
 
         //Temp variables to test the values from the file
         int count = 0;
         source = 0;
         dest = 0;
         destWeight = 0;
-        // Skip the first line it is zero. We already set zero to source
-        num = input.nextLine();
+
+        // Skip the first line since it is zero, We already set zero to the source
+        scan = input.nextLine();
 
         while(input.hasNextLine()){
-            num = input.nextLine();
-            parts = num.split(" ");
+            scan = input.nextLine();
+            parts = scan.split(" ");
 
             if(parts.length < 2){
+
                 if(parts[0].equals("")){
                     continue;
                 }
                 source = Integer.parseInt(parts[0]);
             } else{
                 for(int i = 0; i < parts.length; i++){
+
                     if(!parts[i].equals("") && count == 0){
                         dest = Integer.parseInt(parts[i]);
                         count++;
